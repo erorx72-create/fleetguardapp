@@ -26,6 +26,7 @@ export function UploadDropzone({
   }
 
   return (
+    <>
     <button
       type="button"
       disabled={busy}
@@ -49,18 +50,18 @@ export function UploadDropzone({
       )}
       <span className="text-sm font-bold text-foreground">{busy ? "Uploading…" : label}</span>
       {!compact && <span className="text-xs text-muted-foreground">Drag & drop or tap to choose · max 20MB</span>}
-      <input
-        ref={input}
-        type="file"
-        accept={ACCEPTED_FILES}
-        capture={undefined}
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) onFile(file);
-          e.target.value = "";
-        }}
-      />
     </button>
+    <input
+      ref={input}
+      type="file"
+      accept={ACCEPTED_FILES}
+      className="hidden"
+      onChange={(e) => {
+        const file = e.target.files?.[0];
+        if (file) onFile(file);
+        e.target.value = "";
+      }}
+    />
+    </>
   );
 }
