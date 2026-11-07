@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { DOC_HINTS, DOC_LABELS, DRIVER_DOC_TYPES, docStatus, describeDays, daysUntil } from "@/lib/compliance";
+import { DOC_HINTS, DOC_LABELS, docStatus, describeDays, daysUntil } from "@/lib/compliance";
 import { createMagicUpload, finishMagicUpload, getMagicLinkInfo } from "@/lib/magic-link.functions";
 
 export const Route = createFileRoute("/upload/$token")({
@@ -27,7 +27,8 @@ export const Route = createFileRoute("/upload/$token")({
   component: MagicUploadPage,
 });
 
-type DriverDoc = (typeof DRIVER_DOC_TYPES)[number];
+type DriverDoc = "cdl" | "medical_card" | "mvr" | "drug_test";
+const DRIVER_DOCS: DriverDoc[] = ["cdl", "medical_card", "mvr", "drug_test"];
 
 function MagicUploadPage() {
   const { token } = Route.useParams();
@@ -85,13 +86,13 @@ function MagicUploadPage() {
         </div>
       </header>
       <main className="mx-auto -mt-10 max-w-md space-y-4 px-5 pb-12">
-        {DRIVER_DOC_TYPES.map((t) => {
+        {DRIVER_DOCS.map((t) => {
           const doc = info.documents.find((d) => d.docType === t);
           return (
             <MagicDocCard
               key={t}
               token={token}
-              docType={t as DriverDoc}
+              docType={t}
               expiresOn={doc?.expiresOn ?? null}
               hasFile={Boolean(doc?.hasFile)}
             />
@@ -125,7 +126,10 @@ function MagicDocCard({
 
   async function submit() {
     if (!file) return;
-    if (file.size > 20 * 1024 * 1024) return toast.error("That file is over 20MB");
+    if (file.size > 20 * 1024 * 1024) {
+      toast.error("That file is over 20MB");
+      return;
+    }
     setBusy(true);
     try {
       const slot = await createMagicUpload({ data: { token, docType, fileName: file.name } });

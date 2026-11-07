@@ -10,11 +10,11 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 
-type AuthSearch = { mode?: "signin" | "signup" };
+type AuthSearch = { mode?: "signin" | "signup" | undefined };
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>): AuthSearch => ({
-    mode: search.mode === "signup" ? "signup" : undefined,
+    mode: search["mode"] === "signup" ? "signup" : undefined,
   }),
   head: () => ({
     meta: [

@@ -80,7 +80,7 @@ function csvFor(data: FleetData, companyName: string) {
   return rows.map((r) => r.map((v) => `"${v.replace(/"/g, '""')}"`).join(",")).join("\n");
 }
 
-function DocCell({ doc }: { doc?: EnrichedDoc }) {
+function DocCell({ doc }: { doc: EnrichedDoc | undefined }) {
   if (!doc) return <td className="px-3 py-3 text-muted-foreground">—</td>;
   return (
     <td className="px-3 py-3">

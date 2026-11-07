@@ -55,7 +55,10 @@ function VehiclePage() {
 
   async function remove() {
     const { error } = await supabase.from("vehicles").delete().eq("id", vehicleId);
-    if (error) return toast.error("Could not remove unit");
+    if (error) {
+      toast.error("Could not remove unit");
+      return;
+    }
     toast.success("Unit removed");
     await invalidate();
     navigate({ to: "/trucks" });

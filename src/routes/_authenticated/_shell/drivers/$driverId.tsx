@@ -57,7 +57,10 @@ function DriverPage() {
 
   async function remove() {
     const { error } = await supabase.from("drivers").delete().eq("id", driverId);
-    if (error) return toast.error("Could not remove driver");
+    if (error) {
+      toast.error("Could not remove driver");
+      return;
+    }
     toast.success("Driver removed");
     await invalidate();
     navigate({ to: "/drivers" });

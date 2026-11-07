@@ -52,9 +52,9 @@ export function StatusBadge({
   className,
 }: {
   status: ComplianceStatus;
-  size?: "sm" | "md" | "lg";
-  label?: string;
-  className?: string;
+  size?: "sm" | "md" | "lg" | undefined;
+  label?: string | undefined;
+  className?: string | undefined;
 }) {
   return (
     <span className={cn(badge({ status, size }), className)}>

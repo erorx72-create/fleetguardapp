@@ -29,7 +29,7 @@ export const DOC_HINTS: Record<DocType, string> = {
 /** Days to expiration counted in whole calendar days (local time). */
 export function daysUntil(expiresOn: string | null | undefined, today: Date = new Date()): number | null {
   if (!expiresOn) return null;
-  const [y, m, d] = expiresOn.split("-").map(Number);
+  const [y = 0, m = 1, d = 1] = expiresOn.split("-").map(Number);
   const exp = Date.UTC(y, m - 1, d);
   const now = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
   return Math.round((exp - now) / 86_400_000);

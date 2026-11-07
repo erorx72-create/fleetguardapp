@@ -108,8 +108,8 @@ function AddCompanyDialog({ open, onOpenChange }: { open: boolean; onOpenChange:
     setBusy(true);
     const { data, error } = await supabase.rpc("create_company", {
       _name: name,
-      _dot_number: dot || undefined,
       _with_sample: sample,
+      ...(dot ? { _dot_number: dot } : {}),
     });
     setBusy(false);
     if (error || !data) {
