@@ -28,6 +28,7 @@ export const Route = createFileRoute("/upload/$token")({
 });
 
 type DriverDoc = "cdl" | "medical_card" | "mvr" | "drug_test";
+type MagicInfo = Awaited<ReturnType<typeof getMagicLinkInfo>>;
 const DRIVER_DOCS: DriverDoc[] = ["cdl", "medical_card", "mvr", "drug_test"];
 
 function MagicUploadPage() {
@@ -141,9 +142,21 @@ function MagicDocCard({
         data: { token, docType, path: slot.path, fileName: file.name, expiresOn: date || null },
       });
       toast.success(`${DOC_LABELS[docType]} sent!`);
+      qc.setQueryData<MagicInfo>(["magic", token], (prev) =>
+        prev
+          ? {
+              ...prev,
+              documents: prev.documents.map((d) =>
+                d.docType === docType
+                  ? { ...d, hasFile: true, expiresOn: date || d.expiresOn, uploadedAt: new Date().toISOString() }
+                  : d,
+              ),
+            }
+          : prev,
+      );
       setFile(null);
       setDate("");
-      await qc.invalidateQueries({ queryKey: ["magic", token] });
+      void qc.invalidateQueries({ queryKey: ["magic", token] });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Upload failed — try again");
     } finally {

@@ -40,7 +40,7 @@ function Dashboard() {
         title={company ? company.name : "Loading…"}
         description={
           critical > 0
-            ? `${critical} item${critical === 1 ? "" : "s"} need action now. Clear the red first.`
+            ? `${critical} item${critical === 1 ? " needs" : "s need"} action now. Clear the red first.`
             : expiring > 0
               ? `No violations — ${expiring} item${expiring === 1 ? "" : "s"} expiring within 30 days.`
               : "Every driver and unit is compliant. Nice work."
