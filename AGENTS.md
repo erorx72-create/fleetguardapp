@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Compliance status math (green/yellow/red, safety score) lives only in `src/lib/compliance.ts` and is covered by `src/test/compliance.test.ts`; UI never recomputes thresholds inline.
+- Every company-scoped table is protected by RLS via `public.owns_company(company_id)`; storage paths start with `<company_id>/` so storage policies can reuse the same ownership check.
+- Checklist rows are created by DB triggers when a driver/vehicle is inserted; the client only updates documents, never inserts them.
+- Driver magic links are handled by public server functions in `src/lib/magic-link.functions.ts` that resolve the driver by `magic_token` and use the admin client only after that lookup.
+- Signed-in app pages live under `src/routes/_authenticated/_shell/` (sidebar + company context); the active company id is kept in localStorage via `CompanyProvider`.

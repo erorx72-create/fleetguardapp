@@ -10,33 +10,168 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedShellRouteImport } from './routes/_authenticated/_shell'
+import { Route as UploadTokenRouteImport } from './routes/upload.$token'
+import { Route as AuthenticatedShellAlertsRouteImport } from './routes/_authenticated/_shell/alerts'
+import { Route as AuthenticatedShellAuditRouteImport } from './routes/_authenticated/_shell/audit'
+import { Route as AuthenticatedShellDashboardRouteImport } from './routes/_authenticated/_shell/dashboard'
+import { Route as AuthenticatedShellDriversIndexRouteImport } from './routes/_authenticated/_shell/drivers/index'
+import { Route as AuthenticatedShellDriversDriverIdRouteImport } from './routes/_authenticated/_shell/drivers/$driverId'
+import { Route as AuthenticatedShellTrucksIndexRouteImport } from './routes/_authenticated/_shell/trucks/index'
+import { Route as AuthenticatedShellTrucksVehicleIdRouteImport } from './routes/_authenticated/_shell/trucks/$vehicleId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedShellRoute = AuthenticatedShellRouteImport.update({
+  id: '/_shell',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const UploadTokenRoute = UploadTokenRouteImport.update({
+  id: '/upload/$token',
+  path: '/upload/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedShellAlertsRoute =
+  AuthenticatedShellAlertsRouteImport.update({
+    id: '/alerts',
+    path: '/alerts',
+    getParentRoute: () => AuthenticatedShellRoute,
+  } as any)
+const AuthenticatedShellAuditRoute = AuthenticatedShellAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AuthenticatedShellRoute,
+} as any)
+const AuthenticatedShellDashboardRoute =
+  AuthenticatedShellDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedShellRoute,
+  } as any)
+const AuthenticatedShellDriversIndexRoute =
+  AuthenticatedShellDriversIndexRouteImport.update({
+    id: '/drivers/',
+    path: '/drivers/',
+    getParentRoute: () => AuthenticatedShellRoute,
+  } as any)
+const AuthenticatedShellDriversDriverIdRoute =
+  AuthenticatedShellDriversDriverIdRouteImport.update({
+    id: '/drivers/$driverId',
+    path: '/drivers/$driverId',
+    getParentRoute: () => AuthenticatedShellRoute,
+  } as any)
+const AuthenticatedShellTrucksIndexRoute =
+  AuthenticatedShellTrucksIndexRouteImport.update({
+    id: '/trucks/',
+    path: '/trucks/',
+    getParentRoute: () => AuthenticatedShellRoute,
+  } as any)
+const AuthenticatedShellTrucksVehicleIdRoute =
+  AuthenticatedShellTrucksVehicleIdRouteImport.update({
+    id: '/trucks/$vehicleId',
+    path: '/trucks/$vehicleId',
+    getParentRoute: () => AuthenticatedShellRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/upload/$token': typeof UploadTokenRoute
+  '/alerts': typeof AuthenticatedShellAlertsRoute
+  '/audit': typeof AuthenticatedShellAuditRoute
+  '/dashboard': typeof AuthenticatedShellDashboardRoute
+  '/drivers/$driverId': typeof AuthenticatedShellDriversDriverIdRoute
+  '/trucks/$vehicleId': typeof AuthenticatedShellTrucksVehicleIdRoute
+  '/drivers/': typeof AuthenticatedShellDriversIndexRoute
+  '/trucks/': typeof AuthenticatedShellTrucksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/upload/$token': typeof UploadTokenRoute
+  '/alerts': typeof AuthenticatedShellAlertsRoute
+  '/audit': typeof AuthenticatedShellAuditRoute
+  '/dashboard': typeof AuthenticatedShellDashboardRoute
+  '/drivers/$driverId': typeof AuthenticatedShellDriversDriverIdRoute
+  '/trucks/$vehicleId': typeof AuthenticatedShellTrucksVehicleIdRoute
+  '/drivers': typeof AuthenticatedShellDriversIndexRoute
+  '/trucks': typeof AuthenticatedShellTrucksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/_shell': typeof AuthenticatedShellRouteWithChildren
+  '/upload/$token': typeof UploadTokenRoute
+  '/_authenticated/_shell/alerts': typeof AuthenticatedShellAlertsRoute
+  '/_authenticated/_shell/audit': typeof AuthenticatedShellAuditRoute
+  '/_authenticated/_shell/dashboard': typeof AuthenticatedShellDashboardRoute
+  '/_authenticated/_shell/drivers/$driverId': typeof AuthenticatedShellDriversDriverIdRoute
+  '/_authenticated/_shell/trucks/$vehicleId': typeof AuthenticatedShellTrucksVehicleIdRoute
+  '/_authenticated/_shell/drivers/': typeof AuthenticatedShellDriversIndexRoute
+  '/_authenticated/_shell/trucks/': typeof AuthenticatedShellTrucksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/upload/$token'
+    | '/alerts'
+    | '/audit'
+    | '/dashboard'
+    | '/drivers/$driverId'
+    | '/trucks/$vehicleId'
+    | '/drivers/'
+    | '/trucks/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/upload/$token'
+    | '/alerts'
+    | '/audit'
+    | '/dashboard'
+    | '/drivers/$driverId'
+    | '/trucks/$vehicleId'
+    | '/drivers'
+    | '/trucks'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/_shell'
+    | '/upload/$token'
+    | '/_authenticated/_shell/alerts'
+    | '/_authenticated/_shell/audit'
+    | '/_authenticated/_shell/dashboard'
+    | '/_authenticated/_shell/drivers/$driverId'
+    | '/_authenticated/_shell/trucks/$vehicleId'
+    | '/_authenticated/_shell/drivers/'
+    | '/_authenticated/_shell/trucks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  UploadTokenRoute: typeof UploadTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +183,127 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/_shell': {
+      id: '/_authenticated/_shell'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedShellRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/upload/$token': {
+      id: '/upload/$token'
+      path: '/upload/$token'
+      fullPath: '/upload/$token'
+      preLoaderRoute: typeof UploadTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/_shell/alerts': {
+      id: '/_authenticated/_shell/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AuthenticatedShellAlertsRouteImport
+      parentRoute: typeof AuthenticatedShellRoute
+    }
+    '/_authenticated/_shell/audit': {
+      id: '/_authenticated/_shell/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuthenticatedShellAuditRouteImport
+      parentRoute: typeof AuthenticatedShellRoute
+    }
+    '/_authenticated/_shell/dashboard': {
+      id: '/_authenticated/_shell/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedShellDashboardRouteImport
+      parentRoute: typeof AuthenticatedShellRoute
+    }
+    '/_authenticated/_shell/drivers/': {
+      id: '/_authenticated/_shell/drivers/'
+      path: '/drivers'
+      fullPath: '/drivers/'
+      preLoaderRoute: typeof AuthenticatedShellDriversIndexRouteImport
+      parentRoute: typeof AuthenticatedShellRoute
+    }
+    '/_authenticated/_shell/drivers/$driverId': {
+      id: '/_authenticated/_shell/drivers/$driverId'
+      path: '/drivers/$driverId'
+      fullPath: '/drivers/$driverId'
+      preLoaderRoute: typeof AuthenticatedShellDriversDriverIdRouteImport
+      parentRoute: typeof AuthenticatedShellRoute
+    }
+    '/_authenticated/_shell/trucks/': {
+      id: '/_authenticated/_shell/trucks/'
+      path: '/trucks'
+      fullPath: '/trucks/'
+      preLoaderRoute: typeof AuthenticatedShellTrucksIndexRouteImport
+      parentRoute: typeof AuthenticatedShellRoute
+    }
+    '/_authenticated/_shell/trucks/$vehicleId': {
+      id: '/_authenticated/_shell/trucks/$vehicleId'
+      path: '/trucks/$vehicleId'
+      fullPath: '/trucks/$vehicleId'
+      preLoaderRoute: typeof AuthenticatedShellTrucksVehicleIdRouteImport
+      parentRoute: typeof AuthenticatedShellRoute
+    }
   }
 }
 
+interface AuthenticatedShellRouteChildren {
+  AuthenticatedShellAlertsRoute: typeof AuthenticatedShellAlertsRoute
+  AuthenticatedShellAuditRoute: typeof AuthenticatedShellAuditRoute
+  AuthenticatedShellDashboardRoute: typeof AuthenticatedShellDashboardRoute
+  AuthenticatedShellDriversDriverIdRoute: typeof AuthenticatedShellDriversDriverIdRoute
+  AuthenticatedShellTrucksVehicleIdRoute: typeof AuthenticatedShellTrucksVehicleIdRoute
+  AuthenticatedShellDriversIndexRoute: typeof AuthenticatedShellDriversIndexRoute
+  AuthenticatedShellTrucksIndexRoute: typeof AuthenticatedShellTrucksIndexRoute
+}
+
+const AuthenticatedShellRouteChildren: AuthenticatedShellRouteChildren = {
+  AuthenticatedShellAlertsRoute: AuthenticatedShellAlertsRoute,
+  AuthenticatedShellAuditRoute: AuthenticatedShellAuditRoute,
+  AuthenticatedShellDashboardRoute: AuthenticatedShellDashboardRoute,
+  AuthenticatedShellDriversDriverIdRoute:
+    AuthenticatedShellDriversDriverIdRoute,
+  AuthenticatedShellTrucksVehicleIdRoute:
+    AuthenticatedShellTrucksVehicleIdRoute,
+  AuthenticatedShellDriversIndexRoute: AuthenticatedShellDriversIndexRoute,
+  AuthenticatedShellTrucksIndexRoute: AuthenticatedShellTrucksIndexRoute,
+}
+
+const AuthenticatedShellRouteWithChildren =
+  AuthenticatedShellRoute._addFileChildren(AuthenticatedShellRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedShellRoute: typeof AuthenticatedShellRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedShellRoute: AuthenticatedShellRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  UploadTokenRoute: UploadTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
