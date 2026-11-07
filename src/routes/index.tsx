@@ -104,9 +104,15 @@ function Landing() {
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <Button asChild variant="signal" size="xl">
-                <Link to={signedIn ? "/dashboard" : "/auth"} search={signedIn ? undefined : { mode: "signup" }}>
-                  {signedIn ? "Go to Command Center" : "Create your fleet in 30 seconds"} <ArrowRight />
-                </Link>
+                {signedIn ? (
+                  <Link to="/dashboard">
+                    Go to Command Center <ArrowRight />
+                  </Link>
+                ) : (
+                  <Link to="/auth" search={{ mode: "signup" }}>
+                    Create your fleet in 30 seconds <ArrowRight />
+                  </Link>
+                )}
               </Button>
             </div>
             <p className="mt-4 text-sm text-navy-muted">
