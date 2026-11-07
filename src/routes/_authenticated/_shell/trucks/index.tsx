@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Container, Truck } from "lucide-react";
+import { Truck } from "lucide-react";
 import { AddVehicleDialog } from "@/components/add-vehicle-dialog";
-import { EntityCard } from "@/components/entity-card";
+import { EntityCard, VehicleAvatar } from "@/components/entity-card";
 import { EmptyState, PageHeader } from "@/components/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFleet } from "@/hooks/use-fleet";
@@ -21,15 +21,6 @@ export const Route = createFileRoute("/_authenticated/_shell/trucks/")({
   }),
   component: TrucksPage,
 });
-
-export function VehicleAvatar({ kind }: { kind: string }) {
-  const Icon = kind === "trailer" ? Container : Truck;
-  return (
-    <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-gradient-navy text-navy-foreground">
-      <Icon className="size-5" />
-    </span>
-  );
-}
 
 function TrucksPage() {
   const { data, isLoading } = useFleet();

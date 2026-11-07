@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Container, Truck } from "lucide-react";
 import { StatusBadge, StatusDot } from "@/components/status-badge";
 import type { ComplianceStatus } from "@/lib/compliance";
 import type { EnrichedDoc } from "@/lib/fleet";
@@ -59,6 +59,15 @@ export function InitialsAvatar({ name }: { name: string }) {
   return (
     <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-gradient-navy font-display text-base font-bold text-navy-foreground">
       {initials}
+    </span>
+  );
+}
+
+export function VehicleAvatar({ kind }: { kind: string }) {
+  const Icon = kind === "trailer" ? Container : Truck;
+  return (
+    <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-gradient-navy text-navy-foreground">
+      <Icon className="size-5" />
     </span>
   );
 }
