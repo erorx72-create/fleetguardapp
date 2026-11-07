@@ -18,6 +18,7 @@ import { Route as AuthenticatedShellDashboardRouteImport } from './routes/_authe
 import { Route as AuthenticatedShellDriversIndexRouteImport } from './routes/_authenticated/_shell/drivers/index'
 import { Route as AuthenticatedShellDriversDriverIdRouteImport } from './routes/_authenticated/_shell/drivers/$driverId'
 import { Route as AuthenticatedShellTrucksIndexRouteImport } from './routes/_authenticated/_shell/trucks/index'
+import { Route as AuthenticatedShellTrucksVehicleIdRouteImport } from './routes/_authenticated/_shell/trucks/$vehicleId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -67,6 +68,12 @@ const AuthenticatedShellTrucksIndexRoute =
     path: '/trucks/',
     getParentRoute: () => AuthenticatedShellRoute,
   } as any)
+const AuthenticatedShellTrucksVehicleIdRoute =
+  AuthenticatedShellTrucksVehicleIdRouteImport.update({
+    id: '/trucks/$vehicleId',
+    path: '/trucks/$vehicleId',
+    getParentRoute: () => AuthenticatedShellRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/alerts': typeof AuthenticatedShellAlertsRoute
   '/dashboard': typeof AuthenticatedShellDashboardRoute
   '/drivers/$driverId': typeof AuthenticatedShellDriversDriverIdRoute
+  '/trucks/$vehicleId': typeof AuthenticatedShellTrucksVehicleIdRoute
   '/drivers/': typeof AuthenticatedShellDriversIndexRoute
   '/trucks/': typeof AuthenticatedShellTrucksIndexRoute
 }
@@ -83,6 +91,7 @@ export interface FileRoutesByTo {
   '/alerts': typeof AuthenticatedShellAlertsRoute
   '/dashboard': typeof AuthenticatedShellDashboardRoute
   '/drivers/$driverId': typeof AuthenticatedShellDriversDriverIdRoute
+  '/trucks/$vehicleId': typeof AuthenticatedShellTrucksVehicleIdRoute
   '/drivers': typeof AuthenticatedShellDriversIndexRoute
   '/trucks': typeof AuthenticatedShellTrucksIndexRoute
 }
@@ -95,6 +104,7 @@ export interface FileRoutesById {
   '/_authenticated/_shell/alerts': typeof AuthenticatedShellAlertsRoute
   '/_authenticated/_shell/dashboard': typeof AuthenticatedShellDashboardRoute
   '/_authenticated/_shell/drivers/$driverId': typeof AuthenticatedShellDriversDriverIdRoute
+  '/_authenticated/_shell/trucks/$vehicleId': typeof AuthenticatedShellTrucksVehicleIdRoute
   '/_authenticated/_shell/drivers/': typeof AuthenticatedShellDriversIndexRoute
   '/_authenticated/_shell/trucks/': typeof AuthenticatedShellTrucksIndexRoute
 }
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/dashboard'
     | '/drivers/$driverId'
+    | '/trucks/$vehicleId'
     | '/drivers/'
     | '/trucks/'
   fileRoutesByTo: FileRoutesByTo
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/dashboard'
     | '/drivers/$driverId'
+    | '/trucks/$vehicleId'
     | '/drivers'
     | '/trucks'
   id:
@@ -126,6 +138,7 @@ export interface FileRouteTypes {
     | '/_authenticated/_shell/alerts'
     | '/_authenticated/_shell/dashboard'
     | '/_authenticated/_shell/drivers/$driverId'
+    | '/_authenticated/_shell/trucks/$vehicleId'
     | '/_authenticated/_shell/drivers/'
     | '/_authenticated/_shell/trucks/'
   fileRoutesById: FileRoutesById
@@ -201,6 +214,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedShellTrucksIndexRouteImport
       parentRoute: typeof AuthenticatedShellRoute
     }
+    '/_authenticated/_shell/trucks/$vehicleId': {
+      id: '/_authenticated/_shell/trucks/$vehicleId'
+      path: '/trucks/$vehicleId'
+      fullPath: '/trucks/$vehicleId'
+      preLoaderRoute: typeof AuthenticatedShellTrucksVehicleIdRouteImport
+      parentRoute: typeof AuthenticatedShellRoute
+    }
   }
 }
 
@@ -208,6 +228,7 @@ interface AuthenticatedShellRouteChildren {
   AuthenticatedShellAlertsRoute: typeof AuthenticatedShellAlertsRoute
   AuthenticatedShellDashboardRoute: typeof AuthenticatedShellDashboardRoute
   AuthenticatedShellDriversDriverIdRoute: typeof AuthenticatedShellDriversDriverIdRoute
+  AuthenticatedShellTrucksVehicleIdRoute: typeof AuthenticatedShellTrucksVehicleIdRoute
   AuthenticatedShellDriversIndexRoute: typeof AuthenticatedShellDriversIndexRoute
   AuthenticatedShellTrucksIndexRoute: typeof AuthenticatedShellTrucksIndexRoute
 }
@@ -217,6 +238,8 @@ const AuthenticatedShellRouteChildren: AuthenticatedShellRouteChildren = {
   AuthenticatedShellDashboardRoute: AuthenticatedShellDashboardRoute,
   AuthenticatedShellDriversDriverIdRoute:
     AuthenticatedShellDriversDriverIdRoute,
+  AuthenticatedShellTrucksVehicleIdRoute:
+    AuthenticatedShellTrucksVehicleIdRoute,
   AuthenticatedShellDriversIndexRoute: AuthenticatedShellDriversIndexRoute,
   AuthenticatedShellTrucksIndexRoute: AuthenticatedShellTrucksIndexRoute,
 }
