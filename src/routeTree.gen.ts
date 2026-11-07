@@ -13,7 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedShellRouteImport } from './routes/_authenticated/_shell'
+import { Route as UploadTokenRouteImport } from './routes/upload.$token'
 import { Route as AuthenticatedShellAlertsRouteImport } from './routes/_authenticated/_shell/alerts'
+import { Route as AuthenticatedShellAuditRouteImport } from './routes/_authenticated/_shell/audit'
 import { Route as AuthenticatedShellDashboardRouteImport } from './routes/_authenticated/_shell/dashboard'
 import { Route as AuthenticatedShellDriversIndexRouteImport } from './routes/_authenticated/_shell/drivers/index'
 import { Route as AuthenticatedShellDriversDriverIdRouteImport } from './routes/_authenticated/_shell/drivers/$driverId'
@@ -38,12 +40,22 @@ const AuthenticatedShellRoute = AuthenticatedShellRouteImport.update({
   id: '/_shell',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const UploadTokenRoute = UploadTokenRouteImport.update({
+  id: '/upload/$token',
+  path: '/upload/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedShellAlertsRoute =
   AuthenticatedShellAlertsRouteImport.update({
     id: '/alerts',
     path: '/alerts',
     getParentRoute: () => AuthenticatedShellRoute,
   } as any)
+const AuthenticatedShellAuditRoute = AuthenticatedShellAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AuthenticatedShellRoute,
+} as any)
 const AuthenticatedShellDashboardRoute =
   AuthenticatedShellDashboardRouteImport.update({
     id: '/dashboard',
@@ -78,7 +90,9 @@ const AuthenticatedShellTrucksVehicleIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/upload/$token': typeof UploadTokenRoute
   '/alerts': typeof AuthenticatedShellAlertsRoute
+  '/audit': typeof AuthenticatedShellAuditRoute
   '/dashboard': typeof AuthenticatedShellDashboardRoute
   '/drivers/$driverId': typeof AuthenticatedShellDriversDriverIdRoute
   '/trucks/$vehicleId': typeof AuthenticatedShellTrucksVehicleIdRoute
@@ -88,7 +102,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/upload/$token': typeof UploadTokenRoute
   '/alerts': typeof AuthenticatedShellAlertsRoute
+  '/audit': typeof AuthenticatedShellAuditRoute
   '/dashboard': typeof AuthenticatedShellDashboardRoute
   '/drivers/$driverId': typeof AuthenticatedShellDriversDriverIdRoute
   '/trucks/$vehicleId': typeof AuthenticatedShellTrucksVehicleIdRoute
@@ -101,7 +117,9 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/_shell': typeof AuthenticatedShellRouteWithChildren
+  '/upload/$token': typeof UploadTokenRoute
   '/_authenticated/_shell/alerts': typeof AuthenticatedShellAlertsRoute
+  '/_authenticated/_shell/audit': typeof AuthenticatedShellAuditRoute
   '/_authenticated/_shell/dashboard': typeof AuthenticatedShellDashboardRoute
   '/_authenticated/_shell/drivers/$driverId': typeof AuthenticatedShellDriversDriverIdRoute
   '/_authenticated/_shell/trucks/$vehicleId': typeof AuthenticatedShellTrucksVehicleIdRoute
@@ -113,7 +131,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/upload/$token'
     | '/alerts'
+    | '/audit'
     | '/dashboard'
     | '/drivers/$driverId'
     | '/trucks/$vehicleId'
@@ -123,7 +143,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/upload/$token'
     | '/alerts'
+    | '/audit'
     | '/dashboard'
     | '/drivers/$driverId'
     | '/trucks/$vehicleId'
@@ -135,7 +157,9 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/_shell'
+    | '/upload/$token'
     | '/_authenticated/_shell/alerts'
+    | '/_authenticated/_shell/audit'
     | '/_authenticated/_shell/dashboard'
     | '/_authenticated/_shell/drivers/$driverId'
     | '/_authenticated/_shell/trucks/$vehicleId'
@@ -147,6 +171,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  UploadTokenRoute: typeof UploadTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -179,11 +204,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedShellRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/upload/$token': {
+      id: '/upload/$token'
+      path: '/upload/$token'
+      fullPath: '/upload/$token'
+      preLoaderRoute: typeof UploadTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/_shell/alerts': {
       id: '/_authenticated/_shell/alerts'
       path: '/alerts'
       fullPath: '/alerts'
       preLoaderRoute: typeof AuthenticatedShellAlertsRouteImport
+      parentRoute: typeof AuthenticatedShellRoute
+    }
+    '/_authenticated/_shell/audit': {
+      id: '/_authenticated/_shell/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuthenticatedShellAuditRouteImport
       parentRoute: typeof AuthenticatedShellRoute
     }
     '/_authenticated/_shell/dashboard': {
@@ -226,6 +265,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedShellRouteChildren {
   AuthenticatedShellAlertsRoute: typeof AuthenticatedShellAlertsRoute
+  AuthenticatedShellAuditRoute: typeof AuthenticatedShellAuditRoute
   AuthenticatedShellDashboardRoute: typeof AuthenticatedShellDashboardRoute
   AuthenticatedShellDriversDriverIdRoute: typeof AuthenticatedShellDriversDriverIdRoute
   AuthenticatedShellTrucksVehicleIdRoute: typeof AuthenticatedShellTrucksVehicleIdRoute
@@ -235,6 +275,7 @@ interface AuthenticatedShellRouteChildren {
 
 const AuthenticatedShellRouteChildren: AuthenticatedShellRouteChildren = {
   AuthenticatedShellAlertsRoute: AuthenticatedShellAlertsRoute,
+  AuthenticatedShellAuditRoute: AuthenticatedShellAuditRoute,
   AuthenticatedShellDashboardRoute: AuthenticatedShellDashboardRoute,
   AuthenticatedShellDriversDriverIdRoute:
     AuthenticatedShellDriversDriverIdRoute,
@@ -262,6 +303,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  UploadTokenRoute: UploadTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
