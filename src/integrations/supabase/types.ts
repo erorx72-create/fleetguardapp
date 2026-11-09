@@ -21,6 +21,8 @@ export type Database = {
           id: string
           name: string
           owner_id: string
+          tier: string
+          trial_started_at: string | null
           type: string
         }
         Insert: {
@@ -29,6 +31,8 @@ export type Database = {
           id?: string
           name: string
           owner_id: string
+          tier?: string
+          trial_started_at?: string | null
           type?: string
         }
         Update: {
@@ -37,6 +41,8 @@ export type Database = {
           id?: string
           name?: string
           owner_id?: string
+          tier?: string
+          trial_started_at?: string | null
           type?: string
         }
         Relationships: []
@@ -206,6 +212,33 @@ export type Database = {
           },
         ]
       }
+      api_rate_limits: {
+        Row: {
+          created_at: string
+          id: string
+          ip_address: string
+          request_count: number
+          user_id: string
+          window_start: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_address: string
+          request_count?: number
+          user_id: string
+          window_start?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_address?: string
+          request_count?: number
+          user_id?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -268,6 +301,111 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      subscriptions: {
+        Row: {
+          billing_cycle_end: string
+          billing_cycle_start: string
+          created_at: string
+          id: string
+          paid_at: string | null
+          plan: string
+          status: string
+          trial_expires_at: string
+          trial_started_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          billing_cycle_end?: string
+          billing_cycle_start?: string
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          plan?: string
+          status?: string
+          trial_expires_at?: string
+          trial_started_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          billing_cycle_end?: string
+          billing_cycle_start?: string
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          plan?: string
+          status?: string
+          trial_expires_at?: string
+          trial_started_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      truck_creation_log: {
+        Row: {
+          billing_cycle_start: string
+          company_id: string
+          created_at: string
+          id: string
+          vehicle_id: string
+        }
+        Insert: {
+          billing_cycle_start?: string
+          company_id: string
+          created_at?: string
+          id?: string
+          vehicle_id: string
+        }
+        Update: {
+          billing_cycle_start?: string
+          company_id?: string
+          created_at?: string
+          id?: string
+          vehicle_id?: string
+        }
+        Relationships: []
+      }
+      user_sessions: {
+        Row: {
+          created_at: string
+          device_fingerprint: string
+          id: string
+          ip_address: string
+          ip_geo: string | null
+          is_terminated: boolean
+          last_active_at: string
+          session_token: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_fingerprint: string
+          id?: string
+          ip_address: string
+          ip_geo?: string | null
+          is_terminated?: boolean
+          last_active_at?: string
+          session_token: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_fingerprint?: string
+          id?: string
+          ip_address?: string
+          ip_geo?: string | null
+          is_terminated?: boolean
+          last_active_at?: string
+          session_token?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       vehicles: {
         Row: {
@@ -334,6 +472,41 @@ export type Database = {
         Returns: string
       }
       owns_company: { Args: { _company: string }; Returns: boolean }
+      get_subscription_status: {
+        Args: Record<string, never>
+        Returns: {
+          plan: string
+          status: string
+          trial_started_at: string
+          trial_expires_at: string
+          trial_hours_remaining: number
+          is_trial_active: boolean
+          is_locked: boolean
+          days_since_creation: number
+        }[]
+      }
+      check_rate_limit: {
+        Args: { _user_id: string; _ip: string }
+        Returns: {
+          allowed: boolean
+          remaining: number
+          reset_at: string
+        }[]
+      }
+      upsert_user_session: {
+        Args: {
+          _device_fingerprint: string
+          _ip_address: string
+          _ip_geo?: string
+          _user_agent?: string
+        }
+        Returns: {
+          session_id: string
+          is_terminated: boolean
+          impossible_travel_detected: boolean
+          max_sessions_exceeded: boolean
+        }[]
+      }
     }
     Enums: {
       doc_type:
