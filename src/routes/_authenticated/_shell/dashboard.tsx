@@ -10,6 +10,8 @@ import { useFleet } from "@/hooks/use-fleet";
 import { isRed, safetyScore } from "@/lib/compliance";
 import { urgentDocs } from "@/lib/fleet";
 import { cn } from "@/lib/utils";
+import { AgencyCompanyMenu } from "@/components/agency-company-menu";
+import { PendingReviews } from "@/components/pending-reviews";
 
 export const Route = createFileRoute("/_authenticated/_shell/dashboard")({
   head: () => ({
@@ -35,6 +37,7 @@ function Dashboard() {
 
   return (
     <div className="space-y-8">
+      <AgencyCompanyMenu />
       <PageHeader
         eyebrow="Command Center"
         title={company ? company.name : "Loading…"}
@@ -79,6 +82,7 @@ function Dashboard() {
         )}
       </div>
 
+      {company && <PendingReviews key={company.id} companyId={company.id} fleet={data} />}
       <section className="surface-card animate-rise overflow-hidden" style={{ animationDelay: "0.2s" }}>
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-6 py-5">
           <div>

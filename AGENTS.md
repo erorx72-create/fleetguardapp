@@ -34,4 +34,7 @@ use the editor.
 - Every company-scoped table is protected by RLS via `public.owns_company(company_id)`; storage paths start with `<company_id>/` so storage policies can reuse the same ownership check.
 - Checklist rows are created by DB triggers when a driver/vehicle is inserted; the client only updates documents, never inserts them.
 - Driver magic links are handled by public server functions in `src/lib/magic-link.functions.ts` that resolve the driver by `magic_token` and use the admin client only after that lookup.
+- Public upload reservations and submissions use token-validated functions in `submissions.functions.ts`; checklist updates happen only through the owner-authorized atomic approval RPC, preserving previous approved files until review.
+- Pending files live in private `document-uploads` storage; dashboard polling reads company-scoped submissions so notifications do not require realtime infrastructure.
+- Keep the existing vehicles/documents schema and add fields rather than replacing tables; annual-inspection submissions are assigned to an owner-selected company vehicle during approval.
 - Signed-in app pages live under `src/routes/_authenticated/_shell/` (sidebar + company context); the active company id is kept in localStorage via `CompanyProvider`.
