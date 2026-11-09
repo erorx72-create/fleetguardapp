@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSidebar } from "@/components/ui/sidebar";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/hooks/use-company";
@@ -32,7 +33,7 @@ function initials(name: string) {
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 2)
-    .map((w) => w[0]!.toUpperCase())
+    .map((w) => w[0]?.toUpperCase() ?? "")
     .join("");
 }
 
@@ -95,13 +96,14 @@ export function CompanySwitcher() {
   );
 }
 
-function AddCompanyDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
+export function AddCompanyDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const qc = useQueryClient();
   const { setCompanyId } = useCompany();
   const [name, setName] = useState("");
   const [dot, setDot] = useState("");
   const [sample, setSample] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [type, setType] = useState("fleet_owner");
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -111,11 +113,14 @@ function AddCompanyDialog({ open, onOpenChange }: { open: boolean; onOpenChange:
       _with_sample: sample,
       ...(dot ? { _dot_number: dot } : {}),
     });
-    setBusy(false);
     if (error || !data) {
+      setBusy(false);
       toast.error("Could not create company");
       return;
     }
+    const { error: typeError } = await supabase.rpc("configure_company_type", { _company: data, _type: type });
+    setBusy(false);
+    if (typeError) toast.error("Company created, but its type could not be saved");
     await qc.invalidateQueries({ queryKey: ["companies"] });
     setCompanyId(data);
     toast.success(`${name} added`);
@@ -147,6 +152,7 @@ function AddCompanyDialog({ open, onOpenChange }: { open: boolean; onOpenChange:
               className="h-11 font-mono"
             />
           </div>
+          <div className="space-y-1.5"><Label>Company type</Label><Select value={type} onValueChange={setType}><SelectTrigger aria-label="Company type"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="fleet_owner">Fleet owner</SelectItem><SelectItem value="safety_agency">Safety agency</SelectItem></SelectContent></Select></div>
           <label className="flex items-center gap-3 rounded-lg border border-border p-3 text-sm">
             <Checkbox checked={sample} onCheckedChange={(v) => setSample(v === true)} />
             <span>

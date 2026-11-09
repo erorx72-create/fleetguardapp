@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedShellRouteImport } from './routes/_authenticated/_shell'
+import { Route as UTokenRouteImport } from './routes/u.$token'
 import { Route as UploadTokenRouteImport } from './routes/upload.$token'
 import { Route as AuthenticatedShellAlertsRouteImport } from './routes/_authenticated/_shell/alerts'
 import { Route as AuthenticatedShellAuditRouteImport } from './routes/_authenticated/_shell/audit'
@@ -39,6 +40,11 @@ const AuthRoute = AuthRouteImport.update({
 const AuthenticatedShellRoute = AuthenticatedShellRouteImport.update({
   id: '/_shell',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const UTokenRoute = UTokenRouteImport.update({
+  id: '/u/$token',
+  path: '/u/$token',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const UploadTokenRoute = UploadTokenRouteImport.update({
   id: '/upload/$token',
@@ -90,6 +96,7 @@ const AuthenticatedShellTrucksVehicleIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/u/$token': typeof UTokenRoute
   '/upload/$token': typeof UploadTokenRoute
   '/alerts': typeof AuthenticatedShellAlertsRoute
   '/audit': typeof AuthenticatedShellAuditRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/u/$token': typeof UTokenRoute
   '/upload/$token': typeof UploadTokenRoute
   '/alerts': typeof AuthenticatedShellAlertsRoute
   '/audit': typeof AuthenticatedShellAuditRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/_shell': typeof AuthenticatedShellRouteWithChildren
+  '/u/$token': typeof UTokenRoute
   '/upload/$token': typeof UploadTokenRoute
   '/_authenticated/_shell/alerts': typeof AuthenticatedShellAlertsRoute
   '/_authenticated/_shell/audit': typeof AuthenticatedShellAuditRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/u/$token'
     | '/upload/$token'
     | '/alerts'
     | '/audit'
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/u/$token'
     | '/upload/$token'
     | '/alerts'
     | '/audit'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/_shell'
+    | '/u/$token'
     | '/upload/$token'
     | '/_authenticated/_shell/alerts'
     | '/_authenticated/_shell/audit'
@@ -171,6 +183,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  UTokenRoute: typeof UTokenRoute
   UploadTokenRoute: typeof UploadTokenRoute
 }
 
@@ -203,6 +216,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedShellRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/u/$token': {
+      id: '/u/$token'
+      path: '/u/$token'
+      fullPath: '/u/$token'
+      preLoaderRoute: typeof UTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/upload/$token': {
       id: '/upload/$token'
@@ -303,6 +323,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  UTokenRoute: UTokenRoute,
   UploadTokenRoute: UploadTokenRoute,
 }
 export const routeTree = rootRouteImport
