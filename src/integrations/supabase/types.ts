@@ -21,6 +21,7 @@ export type Database = {
           id: string
           name: string
           owner_id: string
+          type: string
         }
         Insert: {
           created_at?: string
@@ -28,6 +29,7 @@ export type Database = {
           id?: string
           name: string
           owner_id: string
+          type?: string
         }
         Update: {
           created_at?: string
@@ -35,8 +37,66 @@ export type Database = {
           id?: string
           name?: string
           owner_id?: string
+          type?: string
         }
         Relationships: []
+      }
+      document_submissions: {
+        Row: {
+          company_id: string
+          doc_type: Database["public"]["Enums"]["doc_type"]
+          driver_id: string
+          file_name: string
+          file_path: string
+          id: string
+          review_status: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          state_of_issuance: string | null
+          submitted_at: string
+        }
+        Insert: {
+          company_id: string
+          doc_type: Database["public"]["Enums"]["doc_type"]
+          driver_id: string
+          file_name: string
+          file_path: string
+          id?: string
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          state_of_issuance?: string | null
+          submitted_at?: string
+        }
+        Update: {
+          company_id?: string
+          doc_type?: Database["public"]["Enums"]["doc_type"]
+          driver_id?: string
+          file_name?: string
+          file_path?: string
+          id?: string
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          state_of_issuance?: string | null
+          submitted_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_submissions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "document_submissions_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       documents: {
         Row: {
@@ -47,6 +107,7 @@ export type Database = {
           file_name: string | null
           file_path: string | null
           id: string
+          state_of_issuance: string | null
           updated_at: string
           uploaded_at: string | null
           vehicle_id: string | null
@@ -59,6 +120,7 @@ export type Database = {
           file_name?: string | null
           file_path?: string | null
           id?: string
+          state_of_issuance?: string | null
           updated_at?: string
           uploaded_at?: string | null
           vehicle_id?: string | null
@@ -71,6 +133,7 @@ export type Database = {
           file_name?: string | null
           file_path?: string | null
           id?: string
+          state_of_issuance?: string | null
           updated_at?: string
           uploaded_at?: string | null
           vehicle_id?: string | null
@@ -109,6 +172,7 @@ export type Database = {
           id: string
           magic_token: string
           phone: string | null
+          status: string
         }
         Insert: {
           company_id: string
@@ -119,6 +183,7 @@ export type Database = {
           id?: string
           magic_token?: string
           phone?: string | null
+          status?: string
         }
         Update: {
           company_id?: string
@@ -129,6 +194,7 @@ export type Database = {
           id?: string
           magic_token?: string
           phone?: string | null
+          status?: string
         }
         Relationships: [
           {
@@ -210,6 +276,7 @@ export type Database = {
           id: string
           kind: string
           plate: string | null
+          status: string
           unit_number: string
           vin: string | null
         }
@@ -219,6 +286,7 @@ export type Database = {
           id?: string
           kind?: string
           plate?: string | null
+          status?: string
           unit_number: string
           vin?: string | null
         }
@@ -228,6 +296,7 @@ export type Database = {
           id?: string
           kind?: string
           plate?: string | null
+          status?: string
           unit_number?: string
           vin?: string | null
         }
@@ -247,6 +316,19 @@ export type Database = {
     }
     Functions: {
       _seed_sample_fleet: { Args: { _company: string }; Returns: undefined }
+      approve_document_submission: {
+        Args: {
+          _expires_on: string
+          _state?: string
+          _submission: string
+          _vehicle?: string
+        }
+        Returns: undefined
+      }
+      configure_company_type: {
+        Args: { _company: string; _type: string }
+        Returns: undefined
+      }
       create_company: {
         Args: { _dot_number?: string; _name: string; _with_sample?: boolean }
         Returns: string
