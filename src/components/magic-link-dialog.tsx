@@ -17,7 +17,7 @@ import type { Driver } from "@/lib/fleet";
 export function MagicLinkDialog({ driver }: { driver: Driver }) {
   const invalidate = useInvalidateFleet();
   const [copied, setCopied] = useState(false);
-  const link = typeof window !== "undefined" ? `${window.location.origin}/upload/${driver.magic_token}` : "";
+  const link = typeof window !== "undefined" ? `${window.location.origin}/u/${driver.magic_token}` : "";
   const firstName = driver.full_name.split(" ")[0];
   const sms = `Hi ${firstName}, please upload your compliance documents here (no password needed): ${link}`;
 

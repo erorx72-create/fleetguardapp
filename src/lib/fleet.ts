@@ -73,7 +73,7 @@ export const fleetQuery = (companyId: string) =>
           status: statusFromDays(days),
           label: DOC_LABELS[doc.doc_type as DocType],
           ownerKind: driver ? "driver" : "vehicle",
-          ownerId: (driver?.id ?? vehicle?.id)!,
+          ownerId: driver?.id ?? vehicle?.id ?? "",
           ownerName: driver ? driver.full_name : vehicle ? vehicleName(vehicle) : "Unknown",
         };
       });
@@ -115,7 +115,10 @@ export async function uploadDocumentFile(doc: FleetDocument, file: File) {
 }
 
 export async function openDocumentFile(path: string) {
-  const { data, error } = await supabase.storage.from("documents").createSignedUrl(path, 60 * 10);
+  let result = await supabase.storage.from("documents").createSignedUrl(path, 60 * 10);
+  if (result.error) result = await supabase.storage.from("document-uploads").createSignedUrl(path, 60 * 10);
+  const { data, error } = result;
   if (error) throw error;
+  if (!data) throw new Error("Document unavailable");
   window.open(data.signedUrl, "_blank", "noopener,noreferrer");
 }
